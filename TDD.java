@@ -1,5 +1,3 @@
-package 软件测试;
-
 public class TDD {
 	
 	public String input(String str){
@@ -24,11 +22,9 @@ public class TDD {
 			int ans = equal_rank(tmpBlack, tmpWhite, rank_w);
 			if(ans == 1)return "Black win!";
 			else if(ans == -1)return "White win!";
+			else return "Tie!";
 		}
-		return "";
 	}
-	
-	//将牌转化为具体数字
 	int[][] ctoi(char c[][]){
 		int[][] array = new int[5][2];
 		for(int i=0; i<5; i++){
@@ -61,8 +57,6 @@ public class TDD {
 		}
 		return array;
 	}
-	
-	//判断五张牌构成哪种牌型
 	int rank(int c[][]){
 		boolean one = c[0][0] == c[1][0];
 		boolean two = c[1][0] == c[2][0];
@@ -80,7 +74,7 @@ public class TDD {
 				shunzi = true;
 		}
 		i=0;
-		while(i<4){//检验是否花色相同
+		while(i<4){
 			if(c[i][0] != c[i+1][0]){
 				xt = false;
 				break;
@@ -89,7 +83,7 @@ public class TDD {
 			if(i == 4)
 				xt = true;
 		}
-		if(one || two || three || four){//判断有几个对子
+		if(one || two || three || four){
 			if((one && two && three) || (two && three && four))
 				return 8;
 			if((one && two && four) || (one && three && four))
@@ -105,16 +99,14 @@ public class TDD {
 			if(xt) return 6;
 			else return 2;
 		}
-		else if(shunzi){//五张牌都不一样但是顺子
+		else if(shunzi){
 			if(xt) return 9;
 			return 5;
-		}else{//五张牌都不一样且不是顺子
+		}else{
 			if(xt) return 6;
 			return 1;
 		}
 	}
-	
-	//若牌型一样，则再加以判断
 	int equal_rank(int black[][], int white[][], int rank){
 		int pair_b[] = new int[2];
 		int pair_w[] = new int[2];
@@ -128,6 +120,7 @@ public class TDD {
 				else if(black[i][0] > white[i][0]) return 1;
 				else return -1;
 			}
+			return 0;
 		}
 		if(2 == rank){
 			for(int i = 0; i < 4; i++){
@@ -150,6 +143,7 @@ public class TDD {
 				for(int i = 2; i >= 0; i--){
 					if(remain_b[i] > remain_w[i]) return 1;
 					else if(remain_b[i] < remain_w[i]) return -1;
+					return 0;
 				}
 			}
 			
@@ -178,7 +172,9 @@ public class TDD {
 				if(white[i][0] != pair_w[0] && white[i][0] != pair_w[1])
 					remain_w[0]=white[i][0];
 			}
-			if(remain_b[0] > remain_w[0])
+			if(remain_w[0] == remain_b[0])
+				return 0;
+			else if(remain_b[0] > remain_w[0])
 				return 1;
 			else 
 				return -1;
@@ -205,7 +201,9 @@ public class TDD {
 						remain_w[k++]=white[i][0];
 				}
 				for(int i = 2; i>=0; i--){
-					if(remain_b[i] > remain_w[i])
+					if(remain_w[i] == remain_b[i])
+						return 0;
+					else if(remain_b[i] > remain_w[i])
 						return 1;
 					else 
 						return -1;
@@ -217,6 +215,8 @@ public class TDD {
 				return 1;
 			else if(black[4][0] < white[4][0])
 				return -1;
+			else 
+				return 0;
 		}
 		if(8 == rank){
 			for(int i=0 ;i<2 ;i++)
@@ -238,7 +238,9 @@ public class TDD {
 					if(white[i][0] != four_kind_w)
 						remain_w[0]=white[i][0];
 				}
-				if(remain_b[0] > remain_w[0])
+				if(remain_w[0] == remain_b[0])
+					return 0;
+				else if(remain_b[0] > remain_w[0])
 					return 1;
 				else 
 					return -1;
